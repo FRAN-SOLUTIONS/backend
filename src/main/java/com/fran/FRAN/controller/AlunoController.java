@@ -1,11 +1,14 @@
 package com.fran.FRAN.controller;
 
+import com.fran.FRAN.dto.request.LoginRequest;
 import com.fran.FRAN.dto.response.AlunoResponseDTO;
+import com.fran.FRAN.model.entity.Aluno;
 import com.fran.FRAN.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -21,8 +24,24 @@ public class AlunoController {
         return alunoService.getAllAlunos();
     }
 
-    @GetMapping("/hello")
-    public String getSetence() {
-        return "Hello World!";
+    @PostMapping("/alunos/salvar")
+    public ResponseEntity<Aluno> salvarAluno(@RequestBody Aluno aluno) {
+        Aluno savedAluno = alunoService.salvarAluno(aluno);
+        return ResponseEntity.ok(savedAluno);
+    }
+
+    @PostMapping("/alunos/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            boolean valid = alunoService.validarSenha(loginRequest.getEmail(), loginRequest.getPassword());
+            HttpStatus status = valid ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+            return ResponseEntity.status(status).body(valid ? "Login bem-sucedido" : "Senha incorreta.");
+        } catch (ResponseStatusException e) {
+            // Tratar erros específicos do serviço
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+        } catch (Exception e) {
+            // Tratar erros genéricos
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado.");
+        }
     }
 }
