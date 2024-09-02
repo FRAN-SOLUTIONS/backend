@@ -10,14 +10,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequest {
-    //lida com os dados vindo de login
-    @NotBlank(message = "Email é obrigatório")
+public class SignUpRequest{ //lida com os dados vindo de sign in
+
+    @NotBlank(message = "Nome é obrigatório")
+    @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
+    private String nome;
+
     @Email(message = "E-mail deve ser válido")
+    @NotBlank(message = "E-mail é obrigatório")
     private String email;
 
+    @NotBlank(message = "Telefone é obrigatório")
+    private String telefone;
+
+    @NotBlank(message = "Senha é obrigatória")
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
-    @NotBlank(message = "Senha é obrigatório")
     private String password;
 }
-

@@ -11,7 +11,7 @@ import static org.springframework.security.crypto.argon2.Argon2PasswordEncoder.d
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class FranApplication {
-
+	//Essa classse é quem inicia o projeto todo (rode essa classe)
 	public static void main(String[] args) {
 		SpringApplication.run(FranApplication.class, args);
 	}

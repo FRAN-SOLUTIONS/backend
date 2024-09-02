@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class AlunoService {
+public class AlunoService { // Lida com regras de negócios
 
     @Autowired
     private AlunoRepository alunoRepository;
