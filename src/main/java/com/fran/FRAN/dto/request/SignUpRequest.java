@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SignUpRequest{ //lida com os dados vindo de sign in
 
+    @NotBlank(message = "Prontuario é obrigatório")
+    private String prontuario;
+
     @NotBlank(message = "Nome é obrigatório")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
     private String nome;
