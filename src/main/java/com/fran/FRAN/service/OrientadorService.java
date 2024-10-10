@@ -31,31 +31,36 @@ public class OrientadorService { // Lida com regras de negócios
 
     // Salva o orientador com a senha criptografada usando char[]
     public Orientador salvarOrientador(Orientador orientador) {
+        // Verifica se o email já existe no banco de dados
+        Optional<Orientador> existingOrientador = orientadorRepository.findByEmail(orientador.getEmail());
+        if (existingOrientador.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "E-mail já cadastrado.");
+        }
+    
+        // Codifica a senha e salva o orientador
         String encodedPassword = passwordEncoder.encode(orientador.getSenha());
         char[] hashedPassword = hashToCharArray(encodedPassword);
-
+    
         orientador.setSenha(new String(hashedPassword));  // Armazena o hash como String (pois o banco de dados não suporta char[])
         Arrays.fill(hashedPassword, '\0');  // Zera o array de char após uso
-
+    
         return orientadorRepository.save(orientador);
     }
+    
 
     public boolean validarSenha(String email, String password) {
         Optional<Orientador> optionalOrientador = orientadorRepository.findByEmail(email);
-
+    
         if (optionalOrientador.isEmpty()) {
             // Nenhum orientador encontrado
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "orientador não encontrado.");
-        } else if (optionalOrientador.stream().count() > 1) {
-            // Múltiplos orientadors encontrados
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro no banco de dados: múltiplos orientadores encontrados.");
-        } else {
-            // Um único orientador encontrado
-            Orientador orientador = optionalOrientador.get();
-            // Verifique se a senha fornecida corresponde ao hash armazenado
-            return passwordEncoder.matches(password, orientador.getSenha());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Orientador não encontrado.");
         }
+    
+        // Um único orientador encontrado, verificar a senha
+        Orientador orientador = optionalOrientador.get();
+        return passwordEncoder.matches(password, orientador.getSenha());
     }
+    
 
 
     public List<OrientadorResponseDTO> getAllOrientadores() {

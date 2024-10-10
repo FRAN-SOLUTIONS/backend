@@ -1,18 +1,24 @@
 package com.fran.FRAN.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.fran.FRAN.dto.request.LoginRequest;
 import com.fran.FRAN.dto.request.SignUpRequest;
 import com.fran.FRAN.dto.response.OrientadorResponseDTO;
 import com.fran.FRAN.model.entity.Orientador;
 import com.fran.FRAN.service.OrientadorService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("FRAN")
@@ -56,7 +62,6 @@ public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginReques
     } catch (Exception e) {
         e.printStackTrace(); // Log do erro completo para análise
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + e.getMessage());
+        }
     }
-}
-
 }
