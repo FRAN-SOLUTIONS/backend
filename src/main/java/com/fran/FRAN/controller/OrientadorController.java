@@ -62,11 +62,11 @@ public class OrientadorController { //lida com os mapeamentos das rotas
     @PostMapping("/login")
 public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginRequest, HttpSession session) {
     try {
-        boolean valid = orientadorService.validarSenha(loginRequest.getEmail(), loginRequest.getPassword());
+        boolean valid = orientadorService.validarSenha(loginRequest.getProntuario(), loginRequest.getPassword());
         HttpStatus status = valid ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         if (valid) {
             // Armazenar informações do orientador na sessão
-            Optional<Orientador> optionalOrientador = orientadorRepository.findByEmail(loginRequest.getEmail());
+            Optional<Orientador> optionalOrientador = orientadorRepository.findByProntuario(loginRequest.getProntuario());
             if (optionalOrientador.isPresent()) {
                 Orientador orientador = optionalOrientador.get();  // Extraindo o Aluno do Optional
                 session.setAttribute("user", orientador);  // Armazenando o Aluno diretamente na sessão

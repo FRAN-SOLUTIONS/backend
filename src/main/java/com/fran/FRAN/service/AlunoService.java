@@ -32,9 +32,9 @@ public class AlunoService { // Lida com regras de negócios
     // Salva o aluno com a senha criptografada usando char[]
     public Aluno salvarAluno(Aluno aluno) {
         // Verifica se o email existe no banco de dados
-        Optional<Aluno> existingAluno = alunoRepository.findByEmail(aluno.getEmail());
+        Optional<Aluno> existingAluno = alunoRepository.findByProntuario(aluno.getProntuario());
         if (existingAluno.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "E-mail já cadastrado.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Prontuário já cadastrado.");
         }
     
         // Codifica a senha e salva o aluno
@@ -47,8 +47,8 @@ public class AlunoService { // Lida com regras de negócios
         return alunoRepository.save(aluno);
     }
 
-    public boolean validarSenha(String email, String password) {
-        Optional<Aluno> optionalAluno = alunoRepository.findByEmail(email);
+    public boolean validarSenha(String prontuario, String password) {
+        Optional<Aluno> optionalAluno = alunoRepository.findByProntuario(prontuario);
     
         if (optionalAluno.isEmpty()) {
             // Nenhum aluno encontrado

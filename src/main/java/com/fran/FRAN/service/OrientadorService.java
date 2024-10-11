@@ -31,10 +31,10 @@ public class OrientadorService { // Lida com regras de negócios
 
     // Salva o orientador com a senha criptografada usando char[]
     public Orientador salvarOrientador(Orientador orientador) {
-        // Verifica se o email já existe no banco de dados
-        Optional<Orientador> existingOrientador = orientadorRepository.findByEmail(orientador.getEmail());
+        // Verifica se o prontuario já existe no banco de dados
+        Optional<Orientador> existingOrientador = orientadorRepository.findByProntuario(orientador.getProntuario());
         if (existingOrientador.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "E-mail já cadastrado.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "prontuario já cadastrado.");
         }
     
         // Codifica a senha e salva o orientador
@@ -48,8 +48,8 @@ public class OrientadorService { // Lida com regras de negócios
     }
     
 
-    public boolean validarSenha(String email, String password) {
-        Optional<Orientador> optionalOrientador = orientadorRepository.findByEmail(email);
+    public boolean validarSenha(String prontuario, String password) {
+        Optional<Orientador> optionalOrientador = orientadorRepository.findByProntuario(prontuario);
     
         if (optionalOrientador.isEmpty()) {
             // Nenhum orientador encontrado
