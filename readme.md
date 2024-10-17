@@ -55,3 +55,84 @@ Note que você deve colocar o nome da database que você criou lá no PostgreSQL
 
 
 
+------------------------------------------------------- Configurar no Instituto Federal de São Paulo:
+1. Mudar a dependence do Postgree para a dependece do MySQL (pom.xml):
+
+Tirar:
+
+<groupId>org.postgresql</groupId>
+<artifactId>postgresql</artifactId>
+<scope>runtime</scope>
+
+Colocar:
+
+<groupId>mysql</groupId>
+<artifactId>mysql-connector-java</artifactId>
+<version>8.0.XX</version> <!-- Use a versão mais recente disponível -->
+
+2. Ligar o MySQL em Serviços
+3. Criar a conexão com a senha "FRAN" (exemplo)
+4. Mudar o Application.properties para:
+spring.datasource.url=jdbc:mysql://localhost:3306/FRAN
+spring.datasource.username=estudante1
+spring.datasource.password=FRAN
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.hibernate.ddl-auto=update
+
+spring.jmx.enabled=false
+server.port=8082
+
+5. Seguir o tutorial de aplicação do Maven a seguir:
+
+Tutorial para utilizar o Maven como gerenciador de dependência no IFSP.
+1. Instalar Maven:
+   a. Atravez do site https://maven.apache.org/download.cgi, arquivo -
+   Binary tar.gz archive apache-maven-3.9.2-bin.tar.gz
+2. Extrair Maven (Guardar caminho que foi extraído)
+3. Criar projeto Maven ou abrir projeto Maven.
+4. Abrir terminal.
+5. Criar variável JAVA_TOOL_OPTIONS:
+   a. export JAVA_TOOL_OPTIONS="-Djava.net.useSystemProxies=true"
+6. Verifique se a variável foi criada corretamente:
+   a. echo $JAVA_TOOL_OPTIONS
+   b. Deve aparecer: -Djava.net.useSystemProxies=true
+7. Criar variável Path:
+   a. export PATH=/home/estudante1/maven/bin:${PATH} (substituir
+   /home/estudante1/maven/bin pelo caminho que você extraiu o
+   Maven)
+8. Verificar se o Maven foi instalado corretamente
+   a. mvn -version
+   b. Deve aparecer a versão do maven
+9. Baixar as dependências (O terminal deve estar na raiz do projeto):
+   a. mvn install
+   Caso não funcione:
+10. Abra a pasta .m2 na pasta de estudante:
+    a. cd /home/estudante1/.m2
+11. Criar arquivo settings:
+    a. echo oi > settings.xml
+12. Abrir arquivo para editar:
+    a. gedit settings.xml
+13. Ou abrir pelo diretório:
+    a. na pasta “/home/estudante1/ “
+    b. clicar com o direito
+    c. selecionar “Exibir arquivos ocultos”
+    d. abrir pasta “.m2”
+    e. criar “settings.xml”
+    f. abrir “settings.xml”
+14. Editar o texto:
+    <settings>
+    <proxies>
+    <proxy>
+    <id>default</id>
+    <active>true</active>
+    <protocol>https</protocol>
+    <host>proxy.spo.ifsp.edu.br</host>
+    <port>3128</port>
+    </proxy>
+    </proxies>
+    </settings>
+15. Retornar ao caminho do projeto:
+    a. cd /Caminho/do/Projeto
+16. Instalar dependências:
+    a. mvn install
