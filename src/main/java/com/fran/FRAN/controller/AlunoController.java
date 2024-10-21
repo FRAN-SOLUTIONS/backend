@@ -1,7 +1,21 @@
 package com.fran.FRAN.controller;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.fran.FRAN.dto.request.LoginRequest;
-import com.fran.FRAN.dto.request.SignUpRequest;
+import com.fran.FRAN.dto.request.SignUpRequestAluno;
 import com.fran.FRAN.dto.response.AlunoResponseDTO;
 import com.fran.FRAN.model.dao.AlunoRepository;
 import com.fran.FRAN.model.entity.Aluno;
@@ -9,15 +23,6 @@ import com.fran.FRAN.service.AlunoService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("FRAN/alunos")
@@ -35,14 +40,15 @@ public class AlunoController { //lida com os mapeamentos das rotas
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUpAluno(@RequestBody @Valid SignUpRequest salvarAlunoRequest) {
+    public ResponseEntity<?> signUpAluno(@RequestBody @Valid SignUpRequestAluno salvarAlunoRequest) {
         try {
             Aluno aluno = new Aluno();
+            aluno.setProntuario(salvarAlunoRequest.getProntuario());
             aluno.setNome(salvarAlunoRequest.getNome());
             aluno.setEmail(salvarAlunoRequest.getEmail());
             aluno.setTelefone(salvarAlunoRequest.getTelefone());
-            aluno.setPassword(salvarAlunoRequest.getPassword());
-
+            aluno.setSenha(salvarAlunoRequest.getSenha());
+            aluno.setCurso(salvarAlunoRequest.getCurso());
             Aluno savedAluno = alunoService.salvarAluno(aluno);
             return ResponseEntity.ok(savedAluno);
         } catch (ResponseStatusException e) {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fran.FRAN.dto.request.LoginRequest;
-import com.fran.FRAN.dto.request.SignUpRequest;
+import com.fran.FRAN.dto.request.SignUpRequestOrientador;
 import com.fran.FRAN.dto.response.OrientadorResponseDTO;
 import com.fran.FRAN.model.dao.OrientadorRepository;
 import com.fran.FRAN.model.entity.Aluno;
@@ -41,13 +41,12 @@ public class OrientadorController { //lida com os mapeamentos das rotas
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUpOrientador(@RequestBody @Valid SignUpRequest salvarOrientadorRequest) {
+    public ResponseEntity<?> signUpOrientador(@RequestBody @Valid SignUpRequestOrientador salvarOrientadorRequest) {
         try {
             Orientador orientador = new Orientador();
             orientador.setProntuario(salvarOrientadorRequest.getProntuario());
             orientador.setNome(salvarOrientadorRequest.getNome());
             orientador.setEmail(salvarOrientadorRequest.getEmail());
-            orientador.setTelefone(salvarOrientadorRequest.getTelefone());
             orientador.setSenha(salvarOrientadorRequest.getPassword());
 
             Orientador savedOrientador = orientadorService.salvarOrientador(orientador);

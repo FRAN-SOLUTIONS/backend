@@ -38,10 +38,10 @@ public class AlunoService { // Lida com regras de negócios
         }
     
         // Codifica a senha e salva o aluno
-        String encodedPassword = passwordEncoder.encode(aluno.getPassword());
+        String encodedPassword = passwordEncoder.encode(aluno.getSenha());
         char[] hashedPassword = hashToCharArray(encodedPassword);
     
-        aluno.setPassword(new String(hashedPassword));  // Armazena o hash como String
+        aluno.setSenha(new String(hashedPassword));  // Armazena o hash como String
         Arrays.fill(hashedPassword, '\0');  // Zera o array de char após uso
     
         return alunoRepository.save(aluno);
@@ -57,7 +57,7 @@ public class AlunoService { // Lida com regras de negócios
     
         // Um único aluno encontrado, verificar a senha
         Aluno aluno = optionalAluno.get();
-        return passwordEncoder.matches(password, aluno.getPassword());
+        return passwordEncoder.matches(password, aluno.getSenha());
     }
 
     public List<AlunoResponseDTO> getAllAlunos() {

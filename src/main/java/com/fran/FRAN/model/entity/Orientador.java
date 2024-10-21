@@ -9,18 +9,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "orientador")
-@Entity(name = "orientador")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "prontuario")
-public class Orientador {
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "orientador")
+public class Orientador extends Interessado {
     @Id
     private String prontuario;
-    private String nome;
-    private String email;
-    private String telefone;
-    private String senha;
 }

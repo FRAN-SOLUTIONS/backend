@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.springframework.security.crypto.argon2.Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8;
-
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class FranApplication {
 	//Essa classse é quem inicia o projeto todo (rode essa classe)
