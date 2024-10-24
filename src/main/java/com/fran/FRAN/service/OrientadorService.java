@@ -34,7 +34,7 @@ public class OrientadorService { // Lida com regras de negócios
         // Verifica se o email já existe no banco de dados
         Optional<Orientador> existingOrientador = orientadorRepository.findByProntuario(orientador.getProntuario());
         if (existingOrientador.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "E-mail já cadastrado.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "prontuario já cadastrado.");
         }
     
         // Codifica a senha e salva o orientador

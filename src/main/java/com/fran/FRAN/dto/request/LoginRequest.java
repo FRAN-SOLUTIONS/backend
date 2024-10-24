@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoginRequest {
     //lida com os dados vindo de login
-    @NotBlank(message = "Email é obrigatório")
-    @Email(message = "E-mail deve ser válido")
-    private String email;
+    @NotBlank(message = "Promtuario é obrigatório")
+    private String prontuario;
 
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     @NotBlank(message = "Senha é obrigatório")

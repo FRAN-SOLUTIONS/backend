@@ -61,11 +61,11 @@ public class AlunoController { //lida com os mapeamentos das rotas
     @PostMapping("/alunos/login")
 public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
     try {
-        boolean valid = alunoService.validarSenha(loginRequest.getEmail(), loginRequest.getPassword());
+        boolean valid = alunoService.validarSenha(loginRequest.getProntuario(), loginRequest.getPassword());
         HttpStatus status = valid ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         if (valid) {
             // Armazenar informações do aluno na sessão
-            Optional<Aluno> optionalAluno = alunoRepository.findByEmail(loginRequest.getEmail());
+            Optional<Aluno> optionalAluno = alunoRepository.findByEmail(loginRequest.getProntuario());
             if (optionalAluno.isPresent()) {
                 Aluno aluno = optionalAluno.get();  // Extraindo o Aluno do Optional
                 session.setAttribute("user", aluno);  // Armazenando o Aluno diretamente na sessão
