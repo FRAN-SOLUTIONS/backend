@@ -18,7 +18,6 @@ import com.fran.FRAN.dto.request.LoginRequest;
 import com.fran.FRAN.dto.request.SignUpRequestOrientador;
 import com.fran.FRAN.dto.response.OrientadorResponseDTO;
 import com.fran.FRAN.model.dao.OrientadorRepository;
-import com.fran.FRAN.model.entity.Aluno;
 import com.fran.FRAN.model.entity.Orientador;
 import com.fran.FRAN.service.OrientadorService;
 
@@ -61,14 +60,14 @@ public class OrientadorController { //lida com os mapeamentos das rotas
     @PostMapping("/login")
 public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginRequest, HttpSession session) {
     try {
-        boolean valid = orientadorService.validarSenha(loginRequest.getEmail(), loginRequest.getPassword());
+        boolean valid = orientadorService.validarSenha(loginRequest.getProntuario(), loginRequest.getPassword());
         HttpStatus status = valid ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         if (valid) {
             // Armazenar informações do orientador na sessão
-            Optional<Orientador> optionalOrientador = orientadorRepository.findByEmail(loginRequest.getEmail());
+            Optional<Orientador> optionalOrientador = orientadorRepository.findByProntuario(loginRequest.getProntuario());
             if (optionalOrientador.isPresent()) {
                 Orientador orientador = optionalOrientador.get();  // Extraindo o Aluno do Optional
-                session.setAttribute("user", orientador);  // Armazenando o Aluno diretamente na sessão
+                session.setAttribute("orientador", orientador);  // Armazenando o Aluno diretamente na sessão
             }
         }
         return ResponseEntity.status(status).body(valid ? "Login bem-sucedido" : "Senha incorreta.");
@@ -82,7 +81,7 @@ public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginReques
 
     @GetMapping("/me")
 public ResponseEntity<OrientadorResponseDTO> getLoggedUser(HttpSession session) {
-    Orientador orientador = (Orientador) session.getAttribute("user");
+    Orientador orientador = (Orientador) session.getAttribute("orientador");
     if (orientador == null) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
