@@ -2,7 +2,6 @@ package com.fran.FRAN.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,8 +27,8 @@ public class SignUpRequestAluno{ //lida com os dados vindo de sign in
     //@Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Número de telefone inválido")
     private String telefone;
 
-    @NotBlank(message = "Senha é obrigatória")
-    @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
+    //@NotBlank(message = "Senha é obrigatória")
+    //@Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
 
     @NotBlank(message = "Curso é obrigatório")

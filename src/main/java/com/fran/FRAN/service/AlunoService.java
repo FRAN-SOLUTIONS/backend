@@ -31,31 +31,33 @@ public class AlunoService { // Lida com regras de negócios
 
     // Salva o aluno com a senha criptografada usando char[]
     public Aluno salvarAluno(Aluno aluno) {
-        // Verifica se o email existe no banco de dados
+        // Verifica se o prontuário já existe
         Optional<Aluno> existingAluno = alunoRepository.findByProntuario(aluno.getProntuario());
         if (existingAluno.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Prontuario já cadastrado.");
         }
     
-        // Codifica a senha e salva o aluno
-        String encodedPassword = passwordEncoder.encode(aluno.getSenha());
-        char[] hashedPassword = hashToCharArray(encodedPassword);
-    
-        aluno.setSenha(new String(hashedPassword));  // Armazena o hash como String
-        Arrays.fill(hashedPassword, '\0');  // Zera o array de char após uso
+        // Somente codifica a senha se ela foi fornecida
+        if (aluno.getSenha() != null) {
+            String encodedPassword = passwordEncoder.encode(aluno.getSenha());
+            char[] hashedPassword = hashToCharArray(encodedPassword);
+            aluno.setSenha(new String(hashedPassword));
+            Arrays.fill(hashedPassword, '\0');  // Limpa o array de senha após uso
+        } else {
+            aluno.setSenha(null); // Se senha não for fornecida, salva como nulo
+        }
     
         return alunoRepository.save(aluno);
     }
+    
 
     public boolean validarSenha(String email, String password) {
         Optional<Aluno> optionalAluno = alunoRepository.findByEmail(email);
     
         if (optionalAluno.isEmpty()) {
-            // Nenhum aluno encontrado
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado.");
         }
-    
-        // Um único aluno encontrado, verificar a senha
+ 
         Aluno aluno = optionalAluno.get();
         return passwordEncoder.matches(password, aluno.getSenha());
     }
