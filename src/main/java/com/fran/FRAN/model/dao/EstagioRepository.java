@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.fran.FRAN.dto.response.EstagioJoinResponseDTO;
+import com.fran.FRAN.dto.request.SignUpRequestEstagio;
 import com.fran.FRAN.model.entity.Estagio;
 
-public interface EstagioRepository extends JpaRepository<Estagio, String> {
+public interface EstagioRepository extends JpaRepository<Estagio, Long> {
 @Query(value = """
         SELECT 
             e.codigo AS codigoEstagio,
@@ -28,5 +28,5 @@ public interface EstagioRepository extends JpaRepository<Estagio, String> {
         JOIN 
             Orientador o ON e.orientador.prontuario = o.prontuario
     """, nativeQuery = true)
-    List<EstagioJoinResponseDTO> findEstagioWithAlunoAndOrientador();
+    List<SignUpRequestEstagio> findEstagioWithAlunoAndOrientador();
 }
