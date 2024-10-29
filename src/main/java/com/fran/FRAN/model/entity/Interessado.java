@@ -1,7 +1,13 @@
 package com.fran.FRAN.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.MappedSuperclass;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @MappedSuperclass
 @Getter
@@ -12,5 +18,6 @@ import lombok.*;
 public abstract class Interessado {
     private String nome;
     private String email;
+    @JsonIgnore
     private String senha;
 }
