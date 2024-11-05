@@ -55,6 +55,12 @@ public class EstagioService {
         return new EstagioResponseDTO(savedEstagio);
     }
 
+    public List<EstagioResponseDTO> getEstagiosByOrientadorProntuario(String prontuarioOrientador) {
+        return estagioRepository.findByOrientadorProntuario(prontuarioOrientador).stream()
+                .map(EstagioResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
     public List<EstagioResponseDTO> getAllEstagios() {
         return estagioRepository.findAll().stream()
                 .map(EstagioResponseDTO::new)

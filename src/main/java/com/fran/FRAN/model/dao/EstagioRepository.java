@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.fran.FRAN.dto.request.SignUpRequestEstagio;
+import com.fran.FRAN.model.entity.Aluno;
 import com.fran.FRAN.model.entity.Estagio;
 
 public interface EstagioRepository extends JpaRepository<Estagio, Long> {
@@ -29,4 +30,6 @@ public interface EstagioRepository extends JpaRepository<Estagio, Long> {
             Orientador o ON e.orientador.prontuario = o.prontuario
     """, nativeQuery = true)
     List<SignUpRequestEstagio> findEstagioWithAlunoAndOrientador();
+    List<Estagio> findEstagioByAluno(Aluno aluno);
+    List<Estagio> findByOrientadorProntuario(String prontuario);
 }

@@ -1,7 +1,6 @@
 package com.fran.FRAN.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +35,7 @@ public class EstagioController {
     @GetMapping("/")
     public List<EstagioResponseDTO> getAllEstagios() {
         return estagioService.getAllEstagios();
-    }
+    }   
 
      @PostMapping("/create")
     public ResponseEntity<EstagioResponseDTO> createEstagio(@Valid @RequestBody SignUpRequestEstagio signUpRequestEstagio, HttpSession session) {
@@ -52,4 +51,16 @@ public class EstagioController {
         return new ResponseEntity<>(estagioResponse, HttpStatus.CREATED);
     }
    
+    @GetMapping("/orientador/estagios")
+public ResponseEntity<List<EstagioResponseDTO>> getEstagiosByOrientador(HttpSession session) {
+    Orientador orientador = (Orientador) session.getAttribute("orientador");
+    
+    if (orientador == null) {
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Orientador não está autenticado");
+    }
+    
+    List<EstagioResponseDTO> estagios = estagioService.getEstagiosByOrientadorProntuario(orientador.getProntuario());
+    return ResponseEntity.ok(estagios);
+}
+
 }
