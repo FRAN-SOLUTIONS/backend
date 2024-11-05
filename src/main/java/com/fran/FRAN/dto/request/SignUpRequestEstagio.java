@@ -2,9 +2,6 @@ package com.fran.FRAN.dto.request;
 
 import java.time.LocalDate;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +15,6 @@ public class SignUpRequestEstagio{
     private Integer cargaDiaria;
     private LocalDate dataInicio;
     private LocalDate dataTermino;
-    private String status;
 
     private String prontuarioAluno;
     private String prontuarioCoordenador;

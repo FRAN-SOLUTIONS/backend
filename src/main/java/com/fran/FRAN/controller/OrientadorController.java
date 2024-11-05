@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("FRAN/orientadores")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
 public class OrientadorController { //lida com os mapeamentos das rotas
 
     @Autowired
@@ -68,15 +68,16 @@ public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginReques
             if (optionalOrientador.isPresent()) {
                 Orientador orientador = optionalOrientador.get();  // Extraindo o Aluno do Optional
                 session.setAttribute("orientador", orientador);  // Armazenando o Aluno diretamente na sessão
+                return ResponseEntity.status(status).body("Bem-vindo, " + orientador.getNome());
             }
         }
-        return ResponseEntity.status(status).body(valid ? "Login bem-sucedido" : "Senha incorreta.");
+        return ResponseEntity.status(status).body(valid ? "Login bem-sucedidoBACK" : "Senha incorretaBACK.");
     } catch (ResponseStatusException e) {
         return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
     } catch (Exception e) {
         e.printStackTrace(); // Log do erro completo para análise
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + e.getMessage());
-        }
+        }  
     }
 
     @GetMapping("/me")

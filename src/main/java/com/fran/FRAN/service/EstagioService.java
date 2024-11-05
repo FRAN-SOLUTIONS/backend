@@ -5,17 +5,17 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.fran.FRAN.model.entity.Aluno;
-import com.fran.FRAN.model.entity.Coordenador;
-import com.fran.FRAN.model.entity.Orientador;
-import com.fran.FRAN.model.entity.Estagio;
+
 import com.fran.FRAN.dto.request.SignUpRequestEstagio;
-import com.fran.FRAN.dto.response.AlunoResponseDTO;
 import com.fran.FRAN.dto.response.EstagioResponseDTO;
 import com.fran.FRAN.model.dao.AlunoRepository;
 import com.fran.FRAN.model.dao.CoordenadorRepository;
 import com.fran.FRAN.model.dao.EstagioRepository;
 import com.fran.FRAN.model.dao.OrientadorRepository;
+import com.fran.FRAN.model.entity.Aluno;
+import com.fran.FRAN.model.entity.Coordenador;
+import com.fran.FRAN.model.entity.Estagio;
+import com.fran.FRAN.model.entity.Orientador;
 
 @Service
 public class EstagioService {
@@ -45,7 +45,7 @@ public class EstagioService {
         estagio.setCargaDiaria(signUpRequestEstagio.getCargaDiaria());
         estagio.setDataInicio(signUpRequestEstagio.getDataInicio());
         estagio.setDataTermino(signUpRequestEstagio.getDataTermino());
-        estagio.setStatus(signUpRequestEstagio.getStatus());
+        estagio.setStatus(true);
         estagio.setAluno(aluno);
         estagio.setOrientador(orientador);
         estagio.setCoordenador(coordenador);
