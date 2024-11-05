@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpRequestAluno{ //lida com os dados vindo de sign in
+public class SignUpRequestCoordenador {
 
     @NotBlank(message = "Prontuario é obrigatório")
     private String prontuario;
@@ -23,14 +23,7 @@ public class SignUpRequestAluno{ //lida com os dados vindo de sign in
     @NotBlank(message = "E-mail é obrigatório")
     private String email;
 
-    @NotBlank(message = "Telefone é obrigatório")
-    //@Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Número de telefone inválido")
-    private String telefone;
-
-    //@NotBlank(message = "Senha é obrigatória")
-    //@Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
-    private String senha;
-
-    @NotBlank(message = "Curso é obrigatório")
-    private String curso;
+    @NotBlank(message = "Senha é obrigatória")
+    @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
+    private String password;
 }

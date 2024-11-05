@@ -40,23 +40,30 @@ public class AlunoController { //lida com os mapeamentos das rotas
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUpAluno(@RequestBody @Valid SignUpRequestAluno salvarAlunoRequest) {
-        try {
-            Aluno aluno = new Aluno();
-            aluno.setProntuario(salvarAlunoRequest.getProntuario());
-            aluno.setNome(salvarAlunoRequest.getNome());
-            aluno.setEmail(salvarAlunoRequest.getEmail());
-            aluno.setTelefone(salvarAlunoRequest.getTelefone());
+public ResponseEntity<?> signUpAluno(@RequestBody @Valid SignUpRequestAluno salvarAlunoRequest) {
+    try {
+        Aluno aluno = new Aluno();
+        aluno.setProntuario(salvarAlunoRequest.getProntuario());
+        aluno.setNome(salvarAlunoRequest.getNome());
+        aluno.setEmail(salvarAlunoRequest.getEmail());
+        aluno.setTelefone(salvarAlunoRequest.getTelefone());
+        aluno.setCurso(salvarAlunoRequest.getCurso());
+
+        if (salvarAlunoRequest.getSenha() != null && !salvarAlunoRequest.getSenha().isEmpty()) {
             aluno.setSenha(salvarAlunoRequest.getSenha());
-            aluno.setCurso(salvarAlunoRequest.getCurso());
-            Aluno savedAluno = alunoService.salvarAluno(aluno);
-            return ResponseEntity.ok(savedAluno);
-        } catch (ResponseStatusException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + e.getMessage());
+        } else {
+            aluno.setSenha(null);
         }
+
+        Aluno savedAluno = alunoService.salvarAluno(aluno);
+        return ResponseEntity.ok(savedAluno);
+    } catch (ResponseStatusException e) {
+        return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + e.getMessage());
     }
+}
+
 
     @PostMapping("/alunos/login")
 public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
