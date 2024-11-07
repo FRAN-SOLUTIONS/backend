@@ -7,7 +7,7 @@ chrome_path = r"C:\Users\rmora\AppData\Local\Google\Chrome\Application\chrome.ex
 
 # Função para abrir a página e esperar pelo login manual
 def abrirSUAP(browser_executable):
-    prontuario = 'SP3072037'  # Você pode preencher o campo de prontuário, mas a senha fica com o usuário
+    prontuario = 'SP'  # Você pode preencher o campo de prontuário, mas a senha fica com o usuário
     
     with sync_playwright() as p:
         # Lança o navegador correspondente
@@ -32,52 +32,62 @@ def abrirSUAP(browser_executable):
         page.wait_for_url("https://suap.ifsp.edu.br/")  # Altere conforme o redirecionamento do SUAP
 
         # Continuação da automação após o login
-        print("Login detectado! Continuando com a automação...")
-        page.goto("https://suap.ifsp.edu.br/admin/processo_eletronico/processo/?opcao=1")
-        
-        
-        
-        print("Procurando botão de adicionar processo eletrônico...")
-        #se a página tiver este botão, abrir e dar um print falando que está entrando no sistema como coordenador
-        page.click('a[href="/admin/processo_eletronico/processo/add/"]')
-        #se não tiver, dar print falando que entrou como aluno
+        print("Login detectado!")
+        print("Indo para página de adicionar processos...")
 
-        if(verificarCoordenador(page)):
-            print("a")
-            #adicionarProcessoEletronico(page)
+        page.goto("https://suap.ifsp.edu.br/admin/processo_eletronico/processo/add/")
+
+        # Verifica se o usuário é coordenador
+        if verificarCoordenador(page):
+            print("Você tem acesso para adicionar processos.")
+            input("Pressione enter para criar um processo eletrônico aleatório")
+            criarProcessoEletronico(page)  # Chama a função para adicionar o processo eletrônico
         else:
-            print("Não possui botão de criar processo - Provavelmente não entrou na página como coordenador")#Verificando se tem o botão de clicar o botão
-        
+            print("A página identificada não possui as funções de coordenador - Provavelmente entrou no sistema como aluno.")
+
         # Aguarda indefinidamente para visualização
         input("Pressione Enter para fechar o navegador...")
 
         # Fecha o navegador
         browser.close()
-        
+
+
+def criarProcessoEletronico(page):
+    pessoasInteressadas = "Evandro Lourenco, Igor Sampaio, Leonardo Motta, Marcos Verdasca, Paulo Abreu, Wendel Santos, =ALUNO EM QUESTÃO="
+    tipoProcesso = "Ensino: Estágio Obrigatório / Estágio Não Obrigatório / Monitoria"
+    assunto = "Estágio Supervisionado Obrigatório - Aluno(a): Preencher dados do aluno - Matrícula: Preencher dados do aluno - Orientado por: André Evandro Lourenço"
+    setoresInteressados = "SCI-SPO"
+
+    print("Preenchendo dados do processo...")
+
+    # Utiliza os argumentos recebidos para preencher os campos
+    page.fill("#ajaxmultiselect_input_interessados_add", pessoasInteressadas)
+    page.fill("#id_assunto", assunto)
+    page.select_option("#id_nivel_acesso", value="2")
+    page.select_option("#id_hipotese_legal", value="35")
+    page.fill("#ajaxmultiselect_input_setores_interessados_add", setoresInteressados)
+    page.select_option("#id_setor_criacao", value="2487")
+
+    print("Dados preenchidos")
 
 
 def verificarCoordenador(page):
-    with sync_playwright() as p: 
+    print("Verificando se o usuário é coordenador...")
 
-        print("Procurando botão de adicionar processo eletrônico...")
+    # Verifica se os campos de entrada para criar um processo estão presentes
+    botao_interessados = page.locator("#ajaxmultiselect_input_interessados_add")
+    campo_assunto = page.locator("#id_assunto")
 
-        # Verifica se o botão está presente na página
-        botao_adicionar = page.locator('a[href="/admin/processo_eletronico/processo/add/"]')
-            
-        if botao_adicionar.count() > 0:
-           botao_adicionar.click()
-           return (True)
-        else:
-            # Caso contrário, mostre a mensagem alternativa
-            return (False)
-            # Executa a função
-        
+    # Retorna True se ambos os campos estiverem presentes na página
+    return botao_interessados.count() > 0 and campo_assunto.count() > 0
+
+
 def escolherNavegador():
-# Solicita ao usuário qual navegador usar
+    # Solicita ao usuário qual navegador usar
     opcao = int(input("Qual dos navegadores você quer usar?\n 1 - Edge\n 2 - Opera\n 3 - Chrome\n 4 - Chromium (recomendado)\n "))
 
     # Seleciona o navegador com base na opção do usuário
-    while(True):
+    while True:
         if opcao == 1:
             return edge_path
         elif opcao == 2:
@@ -90,5 +100,3 @@ def escolherNavegador():
             print("Opção inválida. Por favor, escolha uma opção válida.")
 
 abrirSUAP(escolherNavegador())
-
-
