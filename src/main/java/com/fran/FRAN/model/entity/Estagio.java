@@ -42,7 +42,7 @@ public class Estagio {
     private LocalDate dataTermino;
 
     @Column(nullable = false)
-    private Boolean status = true;
+    private String status;
 
     // Relacionamento com Aluno
     @ManyToOne
@@ -55,7 +55,7 @@ public class Estagio {
     private Orientador orientador;
 
     // Relacionamento com Coordenador
-    @ManyToOne
-    @JoinColumn(name = "prontuario_coordenador", referencedColumnName = "prontuario", nullable = false)
-    private Coordenador coordenador;
+    //@ManyToOne
+    //@JoinColumn(name = "prontuario_coordenador", referencedColumnName = "prontuario", nullable = false)
+    //private Coordenador coordenador;
 }

@@ -34,7 +34,7 @@ public class CoordenadorService { // Lida com regras de negócios
         // Verifica se o email já existe no banco de dados
         Optional<Coordenador> existingCoordenador = coordenadorRepository.findByProntuario(coordenador.getProntuario());
         if (existingCoordenador.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Prontuário já cadastrado.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Prontuário já cadastrado de coordenador.");
         }
     
         // Codifica a senha e salva o coordenador

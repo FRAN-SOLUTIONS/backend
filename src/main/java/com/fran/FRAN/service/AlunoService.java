@@ -31,13 +31,6 @@ public class AlunoService { // Lida com regras de negócios
 
     // Salva o aluno com a senha criptografada usando char[]
     public Aluno salvarAluno(Aluno aluno) {
-        // Verifica se o prontuário já existe
-        Optional<Aluno> existingAluno = alunoRepository.findByProntuario(aluno.getProntuario());
-        if (existingAluno.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Prontuario já cadastrado.");
-        }
-    
-        // Somente codifica a senha se ela foi fornecida
         if (aluno.getSenha() != null) {
             String encodedPassword = passwordEncoder.encode(aluno.getSenha());
             char[] hashedPassword = hashToCharArray(encodedPassword);

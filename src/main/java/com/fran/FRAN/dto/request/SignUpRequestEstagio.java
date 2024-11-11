@@ -15,6 +15,7 @@ public class SignUpRequestEstagio{
     private Integer cargaDiaria;
     private LocalDate dataInicio;
     private LocalDate dataTermino;
+    private String status;
 
     private String prontuarioAluno;
     private String prontuarioCoordenador;
