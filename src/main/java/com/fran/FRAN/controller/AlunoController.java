@@ -97,7 +97,7 @@ public ResponseEntity<AlunoResponseDTO> getLoggedUser(HttpSession session) {
 }
 
 
-@GetMapping("/logout")
+@PostMapping("/logout")
 public ResponseEntity<String> logout(HttpSession session) {
     session.invalidate();
     return ResponseEntity.ok("Logout realizado com sucesso");

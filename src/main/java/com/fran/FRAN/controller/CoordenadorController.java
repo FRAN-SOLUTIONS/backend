@@ -6,7 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fran.FRAN.dto.request.LoginRequest;
@@ -21,7 +26,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("FRAN/coordenadores")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CoordenadorController { // Lida com os mapeamentos das rotas
 
     @Autowired
@@ -84,7 +89,7 @@ public class CoordenadorController { // Lida com os mapeamentos das rotas
         return ResponseEntity.ok(new CoordenadorResponseDTO(coordenador));
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate();
         return ResponseEntity.ok("Logout realizado com sucesso");
