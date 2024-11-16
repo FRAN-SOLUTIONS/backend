@@ -8,21 +8,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fran.FRAN.dto.request.LoginRequest;
+import com.fran.FRAN.dto.request.PasswordResetInput;
+import com.fran.FRAN.dto.request.PasswordUpdateWithTokenInput;
 import com.fran.FRAN.dto.request.SignUpRequestOrientador;
 import com.fran.FRAN.dto.response.OrientadorResponseDTO;
 import com.fran.FRAN.model.dao.OrientadorRepository;
 import com.fran.FRAN.model.entity.Orientador;
+import com.fran.FRAN.service.EmailService;
+import com.fran.FRAN.service.OrientadorPasswordService;
 import com.fran.FRAN.service.OrientadorService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("FRAN/orientadores")
@@ -33,6 +41,10 @@ public class OrientadorController { //lida com os mapeamentos das rotas
     private OrientadorService orientadorService;
     @Autowired
     private OrientadorRepository orientadorRepository;
+    @Autowired
+    private OrientadorPasswordService orientadorPasswordService;
+    @Autowired
+private EmailService emailService;
 
     @GetMapping("/")
     public List<OrientadorResponseDTO> getAllAlunos() {
@@ -96,4 +108,30 @@ public ResponseEntity<String> logout(HttpSession session) {
     return ResponseEntity.ok("Logout realizado com sucesso");
 }
 
+ @PostMapping("/forgot-password")
+    public void forgotPassword(@RequestBody @Valid PasswordResetInput input) {
+        Optional<Orientador> optionalOrientador = orientadorRepository.findByEmail(input.getEmail());
+        optionalOrientador.ifPresent(user -> {
+            String token = orientadorPasswordService.generateToken(user);
+
+            //email
+            String resetUrl = "http://localhost:5173/redefinirSenha?token=" + token;
+
+
+            // Enviar o e-mail
+            emailService.sendEmail(user.getEmail(),
+                    "Redefinição de Senha",
+                    "Clique no link para redefinir sua senha: " + resetUrl);
+            System.out.println("aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtoken: "+token);
+        });
+    }
+
+    @PostMapping("/change-password")
+    public void changePassword(@RequestBody @Valid PasswordUpdateWithTokenInput input) {
+        try {
+            orientadorPasswordService.changePassword(input.getPassword(), input.getToken());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
