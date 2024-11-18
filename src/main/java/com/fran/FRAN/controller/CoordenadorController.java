@@ -44,7 +44,7 @@ public class CoordenadorController { // Lida com os mapeamentos das rotas
     public ResponseEntity<?> signUpCoordenador(@RequestBody @Valid SignUpRequestCoordenador salvarCoordenadorRequest) {
         try {
             Coordenador coordenador = new Coordenador();
-            coordenador.setProntuario(salvarCoordenadorRequest.getProntuario());
+            coordenador.setProntuario(salvarCoordenadorRequest.getProntuario().toLowerCase());
             coordenador.setNome(salvarCoordenadorRequest.getNome());
             coordenador.setEmail(salvarCoordenadorRequest.getEmail());
             coordenador.setSenha(salvarCoordenadorRequest.getPassword());

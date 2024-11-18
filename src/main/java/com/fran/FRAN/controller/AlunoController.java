@@ -43,7 +43,7 @@ public class AlunoController { //lida com os mapeamentos das rotas
 public ResponseEntity<?> signUpAluno(@RequestBody @Valid SignUpRequestAluno salvarAlunoRequest) {
     try {
         Aluno aluno = new Aluno();
-        aluno.setProntuario(salvarAlunoRequest.getProntuario());
+        aluno.setProntuario(salvarAlunoRequest.getProntuario().toLowerCase());
         aluno.setNome(salvarAlunoRequest.getNome());
         aluno.setEmail(salvarAlunoRequest.getEmail());
         aluno.setTelefone(salvarAlunoRequest.getTelefone());

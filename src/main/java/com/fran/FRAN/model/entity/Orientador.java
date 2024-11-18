@@ -19,4 +19,9 @@ import lombok.Setter;
 public class Orientador extends Interessado {
     @Id
     private String prontuario;
+
+
+    public void setProntuario(String prontuario) {
+        this.prontuario = prontuario != null ? prontuario.toLowerCase() : null;
+    }
 }

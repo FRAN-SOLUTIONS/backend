@@ -11,12 +11,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fran.FRAN.dto.request.EditarPerfilOrientadorRequest;
 import com.fran.FRAN.dto.response.OrientadorResponseDTO;
 import com.fran.FRAN.model.dao.OrientadorRepository;
 import com.fran.FRAN.model.entity.Orientador;
 
 @Service
-public class OrientadorService { // Lida com regras de negócios
+public class OrientadorService {
 
     @Autowired
     private OrientadorRepository orientadorRepository;
@@ -28,16 +29,12 @@ public class OrientadorService { // Lida com regras de negócios
     private char[] hashToCharArray(String hash) {
         return hash.toCharArray();
     }
-
-    // Salva o orientador com a senha criptografada usando char[]
+   
     public Orientador salvarOrientador(Orientador orientador) {
-        // Verifica se o email já existe no banco de dados
         Optional<Orientador> existingOrientador = orientadorRepository.findByProntuario(orientador.getProntuario());
         if (existingOrientador.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "prontuario de orientadorjá cadastrado.");
         }
-    
-        // Codifica a senha e salva o orientador
         String encodedPassword = passwordEncoder.encode(orientador.getSenha());
         char[] hashedPassword = hashToCharArray(encodedPassword);
     
@@ -46,21 +43,28 @@ public class OrientadorService { // Lida com regras de negócios
     
         return orientadorRepository.save(orientador);
     }
+
+     public Orientador editarPerfil(EditarPerfilOrientadorRequest editarPerfilRequest) {
+        Orientador orientador = orientadorRepository.findByProntuario(editarPerfilRequest.getProntuario())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Orientador não encontrado."));
+
+        orientador.setNome(editarPerfilRequest.getNome());
+        orientador.setProntuario(editarPerfilRequest.getProntuario());
+        orientador.setEmail(editarPerfilRequest.getEmail());
+        return orientadorRepository.save(orientador);
+    }
     
 
     public boolean validarSenha(String prontuario, String password) {
         Optional<Orientador> optionalOrientador = orientadorRepository.findByProntuario(prontuario);
     
         if (optionalOrientador.isEmpty()) {
-            // Nenhum orientador encontrado
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Orientador não encontrado.");
         }
-    
-        // Um único orientador encontrado, verificar a senha
+
         Orientador orientador = optionalOrientador.get();
         return passwordEncoder.matches(password, orientador.getSenha());
     }
-    
 
 
     public List<OrientadorResponseDTO> getAllOrientadores() {
