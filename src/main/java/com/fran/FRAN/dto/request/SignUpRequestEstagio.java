@@ -2,6 +2,7 @@ package com.fran.FRAN.dto.request;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -33,6 +34,11 @@ public class SignUpRequestEstagio {
     @NotNull(message = "A data de término não pode ser nula")
     @FutureOrPresent(message = "A data de término deve ser uma data futura ou atual")
     private LocalDate dataTermino;
+
+    @NotNull(message = "A quantidade de dias por semana trabalhado não pode ser nula")
+    @Min(1)
+    @Max(6)
+    private Integer diasPorSemana;
 
     private String status;
 

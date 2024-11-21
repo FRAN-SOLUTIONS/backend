@@ -46,9 +46,7 @@ public class OrientadorController { //lida com os mapeamentos das rotas
 private EmailService emailService;
 
     @GetMapping("/")
-    public List<OrientadorResponseDTO> getAllAlunos() {
-        return orientadorService.getAllOrientadores();
-    }
+    public List<OrientadorResponseDTO> getAllOrientadores() { return orientadorService.getAllOrientadores();}
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUpOrientador(@RequestBody @Valid SignUpRequestOrientador salvarOrientadorRequest) {

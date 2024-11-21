@@ -1,15 +1,10 @@
 package com.fran.FRAN.model.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,8 +36,11 @@ public class Estagio {
     @Column(name = "data_termino", nullable = false)
     private LocalDate dataTermino;
 
+    @Column(name = "diasPorSemana", nullable = false)
+    private Integer diasPorSemana;
+
     @Column(nullable = false)
-    private String status;
+    private Status status;
 
     // Relacionamento com Aluno
     @ManyToOne
@@ -54,8 +52,7 @@ public class Estagio {
     @JoinColumn(name = "prontuario_professor", referencedColumnName = "prontuario", nullable = false)
     private Orientador orientador;
 
-    // Relacionamento com Coordenador
-    //@ManyToOne
-    //@JoinColumn(name = "prontuario_coordenador", referencedColumnName = "prontuario", nullable = false)
-    //private Coordenador coordenador;
+    @OneToMany(mappedBy = "estagio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Relatorio> relatorios = new ArrayList<>();
+
 }
