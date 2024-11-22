@@ -95,7 +95,7 @@ public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginReques
                 return ResponseEntity.status(status).body("Bem-vindo, " + orientador.getNome());
             }
         }
-        return ResponseEntity.status(status).body(valid ? "Login bem-sucedidoBACK" : "Senha incorretaBACK.");
+        return ResponseEntity.status(status).body(valid ? "Login bem-sucedido" : "Senha incorreta.");
     } catch (ResponseStatusException e) {
         return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
     } catch (Exception e) {
