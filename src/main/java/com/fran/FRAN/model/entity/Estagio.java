@@ -54,6 +54,10 @@ public class Estagio {
     @JoinColumn(name = "prontuario_professor", referencedColumnName = "prontuario", nullable = false)
     private Orientador orientador;
 
+    @ManyToOne
+    @JoinColumn(name = "codigoEmpresa", referencedColumnName = "codigo", nullable = false)
+    private Empresa empresa;
+
     // Relacionamento com Coordenador
     //@ManyToOne
     //@JoinColumn(name = "prontuario_coordenador", referencedColumnName = "prontuario", nullable = false)

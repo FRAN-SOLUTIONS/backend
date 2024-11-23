@@ -49,7 +49,7 @@ public class OrientadorService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Orientador não encontrado."));
 
         orientador.setNome(editarPerfilRequest.getNome());
-        orientador.setProntuario(editarPerfilRequest.getProntuario());
+        orientador.setProntuario(editarPerfilRequest.getProntuario().toLowerCase());
         orientador.setEmail(editarPerfilRequest.getEmail());
         return orientadorRepository.save(orientador);
     }

@@ -54,7 +54,7 @@ private EmailService emailService;
     public ResponseEntity<?> signUpOrientador(@RequestBody @Valid SignUpRequestOrientador salvarOrientadorRequest) {
         try {
             Orientador orientador = new Orientador();
-            orientador.setProntuario(salvarOrientadorRequest.getProntuario());
+            orientador.setProntuario(salvarOrientadorRequest.getProntuario().toLowerCase());
             orientador.setNome(salvarOrientadorRequest.getNome());
             orientador.setEmail(salvarOrientadorRequest.getEmail());
             orientador.setSenha(salvarOrientadorRequest.getPassword());
