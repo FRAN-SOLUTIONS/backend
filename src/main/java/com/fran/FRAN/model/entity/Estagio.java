@@ -2,6 +2,8 @@ package com.fran.FRAN.model.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,10 +37,13 @@ public class Estagio {
     @Column(name = "carga_diaria", nullable = false)
     private Integer cargaDiaria;
 
+    
     @Column(name = "data_inicio", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate dataInicio;
 
     @Column(name = "data_termino", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate dataTermino;
 
     @Column(nullable = false)

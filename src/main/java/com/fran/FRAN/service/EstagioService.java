@@ -15,7 +15,9 @@ import com.fran.FRAN.model.dao.AlunoRepository;
 import com.fran.FRAN.model.dao.EstagioRepository;
 import com.fran.FRAN.model.dao.OrientadorRepository;
 import com.fran.FRAN.model.dao.EmpresaRepository;
+import com.fran.FRAN.model.dao.CursoRepository;
 import com.fran.FRAN.model.entity.Aluno;
+import com.fran.FRAN.model.entity.Curso;
 import com.fran.FRAN.model.entity.Empresa;
 import com.fran.FRAN.model.entity.Estagio;
 import com.fran.FRAN.model.entity.Orientador;
@@ -24,6 +26,9 @@ import com.fran.FRAN.model.entity.Orientador;
 public class EstagioService {
     @Autowired
     private EstagioRepository estagioRepository;
+
+    @Autowired
+    private CursoRepository cursoRepository;
 
     @Autowired
     private AlunoRepository alunoRepository;
@@ -77,4 +82,8 @@ public class EstagioService {
                 .collect(Collectors.toList());
     }
 
+    public List<Curso> getAllCursos(){
+        return cursoRepository.findAll().stream()
+        .collect(Collectors.toList());
+    }
 }
