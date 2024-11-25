@@ -35,11 +35,6 @@ public class SignUpRequestEstagio {
     @FutureOrPresent(message = "A data de término deve ser uma data futura ou atual")
     private LocalDate dataTermino;
 
-    @NotNull(message = "A quantidade de dias por semana trabalhado não pode ser nula")
-    @Min(1)
-    @Max(6)
-    private Integer diasPorSemana;
-
     private String status;
 
     @NotBlank(message = "O prontuário do aluno não pode estar em branco")

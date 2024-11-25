@@ -9,7 +9,7 @@ import com.fran.FRAN.dto.request.SignUpRequestEstagio;
 import com.fran.FRAN.model.entity.Aluno;
 import com.fran.FRAN.model.entity.Estagio;
 
-public interface EstagioRepository extends JpaRepository<Estagio, Long> {
+public interface EstagioRepository extends JpaRepository<Estagio, Integer> {
 @Query(value = """
         SELECT 
             e.codigo AS codigoEstagio,

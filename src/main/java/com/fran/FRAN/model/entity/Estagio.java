@@ -36,9 +36,6 @@ public class Estagio {
     @Column(name = "data_termino", nullable = false)
     private LocalDate dataTermino;
 
-    @Column(name = "diasPorSemana", nullable = false)
-    private Integer diasPorSemana;
-
     @Column(nullable = false)
     private Status status;
 

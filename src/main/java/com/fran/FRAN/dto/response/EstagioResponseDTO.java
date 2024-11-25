@@ -9,6 +9,6 @@ import com.fran.FRAN.model.entity.Orientador;
 public record EstagioResponseDTO(Aluno aluno, Orientador orientador, Integer cargaDiaria, LocalDate dataInicio, LocalDate dataTermino, String status, Boolean obrigatorio) {
     public EstagioResponseDTO(Estagio estagio){
         this(estagio.getAluno(), estagio.getOrientador(), estagio.getCargaDiaria(), estagio.getDataInicio(), estagio.getDataTermino(),
-        estagio.getStatus(), estagio.getObrigatorio());
+        estagio.getStatus().toString(), estagio.getObrigatorio());
     }
 }

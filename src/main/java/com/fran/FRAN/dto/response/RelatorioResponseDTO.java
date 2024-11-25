@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RelatorioResponseDTO {
-    private Long codigo;
+    private Integer codigo;
     private String mesReferencia;
     private LocalTime horasTotais;
     private LocalTime horasValidas;

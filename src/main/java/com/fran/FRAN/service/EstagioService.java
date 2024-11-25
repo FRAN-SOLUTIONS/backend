@@ -1,5 +1,6 @@
 package com.fran.FRAN.service;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,6 @@ public class EstagioService {
         estagio.setCargaDiaria(signUpRequestEstagio.getCargaDiaria());
         estagio.setDataInicio(signUpRequestEstagio.getDataInicio());
         estagio.setDataTermino(signUpRequestEstagio.getDataTermino());
-        estagio.setDiasPorSemana(signUpRequestEstagio.getDiasPorSemana());
         estagio.setStatus(Status.PENDENTE);
         estagio.setAluno(aluno);
         estagio.setOrientador(orientador);
@@ -52,16 +52,11 @@ public class EstagioService {
         List<Relatorio> relatorios = new ArrayList<>();
 
         for (Mes mes : Mes.values()) {
-            int horasTotais = Relatorio.calcularHorasMes(
-                    savedEstagio.getCargaDiaria(),
-                    mes,
-                    savedEstagio.getDiasPorSemana()
-            );
-
             Relatorio relatorio = new Relatorio();
             relatorio.setMes_referencia(mes);
-            relatorio.setHoras_totais(LocalTime.of(horasTotais / 60, horasTotais % 60));
-            relatorio.setHoras_validas(LocalTime.of(horasTotais / 60, horasTotais % 60)); // Todas horas válidas inicialmente
+            relatorio.setData_entregue(LocalDateTime.now());
+            relatorio.setHoras_totais(LocalTime.ofSecondOfDay(0)); // inicia com 0
+            relatorio.setHoras_validas(LocalTime.ofSecondOfDay(0));
             relatorio.setStatus(Status.PENDENTE);
             relatorio.setEstagio(savedEstagio);
 

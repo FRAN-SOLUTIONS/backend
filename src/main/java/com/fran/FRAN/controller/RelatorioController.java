@@ -30,7 +30,7 @@ public class RelatorioController {
      * Atualiza as horas totais de um relatório.
      */
     @PatchMapping("/{id}/horas-totais")
-    public ResponseEntity<Relatorio> atualizarHorasTotais(@PathVariable Long id, @RequestBody LocalTime novasHorasTotais) {
+    public ResponseEntity<Relatorio> atualizarHorasTotais(@PathVariable Integer id, @RequestBody LocalTime novasHorasTotais) {
         Relatorio relatorio = buscarRelatorioPorId(id);
         relatorio.setHoras_totais(novasHorasTotais);
         return ResponseEntity.ok(relatorioRepository.save(relatorio));
@@ -40,7 +40,7 @@ public class RelatorioController {
      * Atualiza as horas válidas de um relatório.
      */
     @PatchMapping("/{id}/horas-validas")
-    public ResponseEntity<Relatorio> atualizarHorasValidas(@PathVariable Long id, @RequestBody LocalTime novasHorasValidas) {
+    public ResponseEntity<Relatorio> atualizarHorasValidas(@PathVariable Integer id, @RequestBody LocalTime novasHorasValidas) {
         Relatorio relatorio = buscarRelatorioPorId(id);
         relatorio.setHoras_validas(novasHorasValidas);
         return ResponseEntity.ok(relatorioRepository.save(relatorio));
@@ -50,7 +50,7 @@ public class RelatorioController {
      * Atualiza a data de entrega de um relatório.
      */
     @PatchMapping("/{id}/data-entregue")
-    public ResponseEntity<Relatorio> atualizarDataEntregue(@PathVariable Long id, @RequestBody LocalDateTime novaDataEntregue) {
+    public ResponseEntity<Relatorio> atualizarDataEntregue(@PathVariable Integer id, @RequestBody LocalDateTime novaDataEntregue) {
         Relatorio relatorio = buscarRelatorioPorId(id);
         relatorio.setData_entregue(novaDataEntregue);
         return ResponseEntity.ok(relatorioRepository.save(relatorio));
@@ -60,7 +60,7 @@ public class RelatorioController {
      * Atualiza o mês de referência de um relatório.
      */
     @PatchMapping("/{id}/mes-referencia")
-    public ResponseEntity<Relatorio> atualizarMesReferencia(@PathVariable Long id, @RequestBody Mes novoMesReferencia) {
+    public ResponseEntity<Relatorio> atualizarMesReferencia(@PathVariable Integer id, @RequestBody Mes novoMesReferencia) {
         Relatorio relatorio = buscarRelatorioPorId(id);
         relatorio.setMes_referencia(novoMesReferencia);
         return ResponseEntity.ok(relatorioRepository.save(relatorio));
@@ -70,7 +70,7 @@ public class RelatorioController {
      * Atualiza o status de um relatório.
      */
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Relatorio> atualizarStatus(@PathVariable Long id, @RequestBody Status novoStatus) {
+    public ResponseEntity<Relatorio> atualizarStatus(@PathVariable Integer id, @RequestBody Status novoStatus) {
         Relatorio relatorio = buscarRelatorioPorId(id);
         relatorio.setStatus(novoStatus);
         return ResponseEntity.ok(relatorioRepository.save(relatorio));
@@ -79,13 +79,13 @@ public class RelatorioController {
     /**
      * Método utilitário para buscar um relatório pelo ID.
      */
-    private Relatorio buscarRelatorioPorId(Long id) {
+    private Relatorio buscarRelatorioPorId(Integer id) {
         return relatorioRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Relatório não encontrado"));
     }
 
     @GetMapping("/{estagioId}/relatorios")
-    public ResponseEntity<List<RelatorioResponseDTO>> listarRelatoriosPorEstagio(@PathVariable Long estagioId) {
+    public ResponseEntity<List<RelatorioResponseDTO>> listarRelatoriosPorEstagio(@PathVariable Integer estagioId) {
         // Buscar o estágio no banco de dados
         Estagio estagio = estagioRepository.findById(estagioId)
                 .orElseThrow(() -> new RuntimeException("Estágio não encontrado"));
