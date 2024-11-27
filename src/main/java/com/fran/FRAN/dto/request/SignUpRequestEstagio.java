@@ -40,4 +40,8 @@ public class SignUpRequestEstagio {
     @NotBlank(message = "O prontuário do aluno não pode estar em branco")
     @Size(min = 4, max = 14, message = "O prontuário do aluno deve ter entre 4 e 14 caracteres")
     private String prontuarioAluno;
+
+    @NotNull(message = "Os dados da empresa são obrigatórios")
+    private SignUpRequestEmpresa empresa;
+
 }

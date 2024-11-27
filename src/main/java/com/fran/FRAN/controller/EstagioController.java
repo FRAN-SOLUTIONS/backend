@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.fran.FRAN.dto.request.SignUpRequestEstagio;
 import com.fran.FRAN.dto.response.EstagioResponseDTO;
 import com.fran.FRAN.model.dao.EstagioRepository;
+import com.fran.FRAN.model.entity.Curso;
 import com.fran.FRAN.model.entity.Orientador;
 import com.fran.FRAN.service.EstagioService;
 
@@ -25,7 +26,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("FRAN/estagios")
 @CrossOrigin(origins = "http://localhost:5173")
-public class EstagioController { 
+public class EstagioController {
 
     @Autowired
     private EstagioService estagioService;
@@ -35,32 +36,40 @@ public class EstagioController {
     @GetMapping("/")
     public List<EstagioResponseDTO> getAllEstagios() {
         return estagioService.getAllEstagios();
-    }   
+    }
 
-     @PostMapping("/create")
-    public ResponseEntity<EstagioResponseDTO> createEstagio(@Valid @RequestBody SignUpRequestEstagio signUpRequestEstagio, HttpSession session) {
-      
+    @PostMapping("/create")
+    public ResponseEntity<EstagioResponseDTO> createEstagio(
+            @Valid @RequestBody SignUpRequestEstagio signUpRequestEstagio, HttpSession session) {
+
         Orientador orientador = (Orientador) session.getAttribute("orientador");
-        
+
         if (orientador == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Orientador não está autenticado");
         }
-    
-        EstagioResponseDTO estagioResponse = estagioService.criarEstagio(signUpRequestEstagio, orientador.getProntuario());
-        
+
+        EstagioResponseDTO estagioResponse = estagioService.criarEstagio(signUpRequestEstagio,
+                orientador.getProntuario());
+
         return new ResponseEntity<>(estagioResponse, HttpStatus.CREATED);
     }
-   
+
     @GetMapping("/orientador/estagios")
-public ResponseEntity<List<EstagioResponseDTO>> getEstagiosByOrientador(HttpSession session) {
-    Orientador orientador = (Orientador) session.getAttribute("orientador");
-    
-    if (orientador == null) {
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Orientador não está autenticado");
+    public ResponseEntity<List<EstagioResponseDTO>> getEstagiosByOrientador(HttpSession session) {
+        Orientador orientador = (Orientador) session.getAttribute("orientador");
+
+        if (orientador == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Orientador não está autenticado");
+        }
+
+        List<EstagioResponseDTO> estagios = estagioService
+                .getEstagiosByOrientadorProntuario(orientador.getProntuario());
+        return ResponseEntity.ok(estagios);
     }
-    
-    List<EstagioResponseDTO> estagios = estagioService.getEstagiosByOrientadorProntuario(orientador.getProntuario());
-    return ResponseEntity.ok(estagios);
-}
+
+    @GetMapping("/cursos")
+    public List<Curso> getAllCursos() {
+        return estagioService.getAllCursos();
+    }
 
 }

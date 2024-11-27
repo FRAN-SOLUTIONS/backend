@@ -9,14 +9,24 @@ import java.util.stream.Collectors;
 import com.fran.FRAN.model.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.fran.FRAN.dto.request.SignUpRequestEmpresa;
 import com.fran.FRAN.dto.request.SignUpRequestEstagio;
 import com.fran.FRAN.dto.response.EstagioResponseDTO;
 import com.fran.FRAN.model.dao.AlunoRepository;
 import com.fran.FRAN.model.dao.EstagioRepository;
 import com.fran.FRAN.model.dao.OrientadorRepository;
 import com.fran.FRAN.model.dao.RelatorioRepository;
+import com.fran.FRAN.model.dao.EmpresaRepository;
+import com.fran.FRAN.model.dao.CursoRepository;
+import com.fran.FRAN.model.entity.Aluno;
+import com.fran.FRAN.model.entity.Curso;
+import com.fran.FRAN.model.entity.Empresa;
+import com.fran.FRAN.model.entity.Estagio;
+import com.fran.FRAN.model.entity.Orientador;
 
 @Service
 public class EstagioService {
@@ -24,7 +34,13 @@ public class EstagioService {
     private EstagioRepository estagioRepository;
 
     @Autowired
+    private CursoRepository cursoRepository;
+
+    @Autowired
     private AlunoRepository alunoRepository;
+
+    @Autowired
+    private EmpresaRepository empresaRepository;
 
     @Autowired
     private OrientadorRepository orientadorRepository;
@@ -33,11 +49,21 @@ public class EstagioService {
     private RelatorioRepository relatorioRepository;
 
     public EstagioResponseDTO criarEstagio(SignUpRequestEstagio signUpRequestEstagio, String prontuarioOrientador) {
-        Aluno aluno = alunoRepository.findByProntuario(signUpRequestEstagio.getProntuarioAluno())
-                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+        SignUpRequestEmpresa empresaDTO = signUpRequestEstagio.getEmpresa();
+        Empresa empresa = new Empresa();
+        empresa.setNomeFantasia(empresaDTO.getNomeFantasia());
+        empresa.setRazaoSocial(empresaDTO.getRazaoSocial());
+        empresa.setCnpj(empresaDTO.getCnpj());
+        empresa.setEmail(empresaDTO.getEmail());
+        empresa.setTelefone(empresaDTO.getTelefone());
+        empresa = empresaRepository.save(empresa);
+        
         Orientador orientador = orientadorRepository.findByProntuario(prontuarioOrientador)
-                .orElseThrow(() -> new RuntimeException("Orientador não encontrado"));
-
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Orientador não encontrado"));
+    
+        Aluno aluno = alunoRepository.findByProntuario(signUpRequestEstagio.getProntuarioAluno())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado"));
+      
         Estagio estagio = new Estagio();
         estagio.setObrigatorio(signUpRequestEstagio.getObrigatorio());
         estagio.setCargaDiaria(signUpRequestEstagio.getCargaDiaria());
@@ -46,6 +72,7 @@ public class EstagioService {
         estagio.setStatus(Status.PENDENTE);
         estagio.setAluno(aluno);
         estagio.setOrientador(orientador);
+        estagio.setEmpresa(empresa);
 
         Estagio savedEstagio = estagioRepository.save(estagio);
 
@@ -77,5 +104,10 @@ public class EstagioService {
         return estagioRepository.findAll().stream()
                 .map(EstagioResponseDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    public List<Curso> getAllCursos(){
+        return cursoRepository.findAll().stream()
+        .collect(Collectors.toList());
     }
 }

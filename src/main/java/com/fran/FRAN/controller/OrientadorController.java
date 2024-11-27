@@ -52,7 +52,7 @@ private EmailService emailService;
     public ResponseEntity<?> signUpOrientador(@RequestBody @Valid SignUpRequestOrientador salvarOrientadorRequest) {
         try {
             Orientador orientador = new Orientador();
-            orientador.setProntuario(salvarOrientadorRequest.getProntuario());
+            orientador.setProntuario(salvarOrientadorRequest.getProntuario().toLowerCase());
             orientador.setNome(salvarOrientadorRequest.getNome());
             orientador.setEmail(salvarOrientadorRequest.getEmail());
             orientador.setSenha(salvarOrientadorRequest.getPassword());
@@ -93,7 +93,7 @@ public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginReques
                 return ResponseEntity.status(status).body("Bem-vindo, " + orientador.getNome());
             }
         }
-        return ResponseEntity.status(status).body(valid ? "Login bem-sucedidoBACK" : "Senha incorretaBACK.");
+        return ResponseEntity.status(status).body(valid ? "Login bem-sucedido" : "Senha incorreta.");
     } catch (ResponseStatusException e) {
         return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
     } catch (Exception e) {

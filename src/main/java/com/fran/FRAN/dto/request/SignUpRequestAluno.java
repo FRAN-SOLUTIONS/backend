@@ -23,7 +23,6 @@ public class SignUpRequestAluno{ //lida com os dados vindo de sign in
     @NotBlank(message = "E-mail é obrigatório")
     private String email;
 
-    @NotBlank(message = "Telefone é obrigatório")
     //@Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Número de telefone inválido")
     private String telefone;
 
