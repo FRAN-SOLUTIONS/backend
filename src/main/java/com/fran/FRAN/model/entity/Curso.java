@@ -19,11 +19,10 @@ import lombok.Setter;
 @Table(name = "curso")
 public class Curso {
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Integer codigo;
-
+    
     @Column(nullable = false)
     private String nomeCurso;
 }

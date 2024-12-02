@@ -19,7 +19,9 @@ import lombok.Setter;
 public class Aluno extends Interessado {
     @Id
     private String prontuario;
+
     private String telefone;
+    
     private String curso;
 
     public void setProntuario(String prontuario) {

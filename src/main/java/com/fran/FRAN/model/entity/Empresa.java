@@ -24,20 +24,18 @@ public class Empresa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Integer codigo;
-
-    @Column(nullable = false)
+    
     private String nomeFantasia;
 
-    @Column(nullable = false)   
+    @Column(nullable = false)  
     private String razaoSocial;
-
-    @Column(nullable = false)
+   
+ 
     private String cnpj;
 
-    @Column(nullable = false)
+   
     private String email;
-    
-    @Column(nullable = false)
+  
     private String telefone;
 
 }

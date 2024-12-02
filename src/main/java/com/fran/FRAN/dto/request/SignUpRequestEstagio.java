@@ -2,13 +2,11 @@ package com.fran.FRAN.dto.request;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +26,6 @@ public class SignUpRequestEstagio {
     private Integer cargaDiaria;
 
     @NotNull(message = "A data de início não pode ser nula")
-    @PastOrPresent(message = "A data de início deve ser uma data passada ou atual")
     private LocalDate dataInicio;
 
     @NotNull(message = "A data de término não pode ser nula")

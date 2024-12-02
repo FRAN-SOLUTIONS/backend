@@ -120,7 +120,7 @@ public ResponseEntity<String> logout(HttpSession session) {
 
  @PostMapping("/forgot-password")
     public void forgotPassword(@RequestBody @Valid PasswordResetInput input) {
-        Optional<Orientador> optionalOrientador = orientadorRepository.findByEmail(input.getEmail());
+        Optional<Orientador> optionalOrientador = orientadorRepository.findByProntuario(input.getProntuario());
         optionalOrientador.ifPresent(user -> {
             String token = orientadorPasswordService.generateToken(user);
             String resetUrl = "http://localhost:5173/redefinirSenha?token=" + token;

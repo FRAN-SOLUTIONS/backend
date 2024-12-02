@@ -33,7 +33,7 @@ public class OrientadorService {
     public Orientador salvarOrientador(Orientador orientador) {
         Optional<Orientador> existingOrientador = orientadorRepository.findByProntuario(orientador.getProntuario());
         if (existingOrientador.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "prontuario de orientadorjá cadastrado.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "prontuario de orientador já cadastrado.");
         }
         String encodedPassword = passwordEncoder.encode(orientador.getSenha());
         char[] hashedPassword = hashToCharArray(encodedPassword);
