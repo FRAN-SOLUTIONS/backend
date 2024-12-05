@@ -74,9 +74,20 @@ public class OrientadorService {
     }
 
     public String forgotPassword(String email) {
-
           Orientador orientador =  orientadorRepository.findByEmail(email).orElseThrow(
                 ()-> new RuntimeException("Orientador não encontrado com esse email"));
             return null;
+    }
+
+    public void atualizarSenha(String prontuario, String novaSenha) {
+        Optional<Orientador> optionalOrientador = orientadorRepository.findByProntuario(prontuario);
+        if (optionalOrientador.isPresent()) {
+            Orientador orientador = optionalOrientador.get();
+            String encodedPassword = passwordEncoder.encode(novaSenha);
+            orientador.setSenha(encodedPassword);
+            orientadorRepository.save(orientador);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Orientador não encontrado.");
+        }
     }
 }

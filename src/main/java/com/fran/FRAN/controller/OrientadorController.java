@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fran.FRAN.dto.request.EditPasswordRequest;
 import com.fran.FRAN.dto.request.EditarPerfilOrientadorRequest;
 import com.fran.FRAN.dto.request.LoginRequest;
 import com.fran.FRAN.dto.request.PasswordResetInput;
@@ -34,7 +35,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("FRAN/orientadores")
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
-public class OrientadorController { //lida com os mapeamentos das rotas
+public class OrientadorController { 
 
     @Autowired
     private OrientadorService orientadorService;
@@ -85,11 +86,10 @@ public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginReques
         boolean valid = orientadorService.validarSenha(loginRequest.getProntuario(), loginRequest.getPassword());
         HttpStatus status = valid ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         if (valid) {
-            // Armazenar informações do orientador na sessão
             Optional<Orientador> optionalOrientador = orientadorRepository.findByProntuario(loginRequest.getProntuario());
             if (optionalOrientador.isPresent()) {
-                Orientador orientador = optionalOrientador.get();  // Extraindo o Aluno do Optional
-                session.setAttribute("orientador", orientador);  // Armazenando o Aluno diretamente na sessão
+                Orientador orientador = optionalOrientador.get();  
+                session.setAttribute("orientador", orientador);  
                 return ResponseEntity.status(status).body("Bem-vindo, " + orientador.getNome());
             }
         }
@@ -97,7 +97,7 @@ public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginReques
     } catch (ResponseStatusException e) {
         return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
     } catch (Exception e) {
-        e.printStackTrace(); // Log do erro completo para análise
+        e.printStackTrace(); 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + e.getMessage());
         }  
     }
@@ -139,4 +139,28 @@ public ResponseEntity<String> logout(HttpSession session) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/editPassword")
+public ResponseEntity<?> updatePassword(@RequestBody @Valid EditPasswordRequest input, HttpSession session) {
+    try {
+
+        Orientador orientadorLogado = (Orientador) session.getAttribute("orientador");
+        if (orientadorLogado == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Você não está autenticado.");
+        }
+        boolean senhaValida = orientadorService.validarSenha(orientadorLogado.getProntuario(), input.getSenhaAtual());
+        if (!senhaValida) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Senha atual incorreta.");
+        }
+        orientadorService.atualizarSenha(orientadorLogado.getProntuario(), input.getNovaSenha());
+        orientadorLogado.setSenha(input.getNovaSenha());
+        session.setAttribute("orientador", orientadorLogado);
+
+        return ResponseEntity.ok("Senha atualizada com sucesso.");
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar a senha: " + e.getMessage());
+    }
+}
+
 }
