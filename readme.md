@@ -23,31 +23,35 @@ Certifique-se de que você tenha as seguintes ferramentas instaladas em sua máq
 ![name database](imagens/namedatabase.jpg)
 8. navegue até sua database, clique com botão direito e navegue até "Query tool"
 ![querytool](imagens/querytool.jpg)
-9. Insira o seguinte código e rode-o para criar a tabela alunos: 
 
-
-    ```sql
-    CREATE TABLE aluno (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    telefone VARCHAR(20),
-    password TEXT NOT NULL
-);
-    
-
-3. Feito a configuração no bdd, agora, no repositório backend, crie um arquivo chamado exatamente application.properties, neste caminho na pasta resources: `src/main/resources/application.properties` com as configurações do banco de dados:
+9. Feito a configuração no bdd, agora, no repositório backend, crie um arquivo chamado exatamente application.properties, neste caminho na pasta resources: `src/main/resources/application.properties` com as configurações do banco de dados:
 
     ```properties
-    spring.datasource.url=jdbc:postgresql://localhost:5432/nome_database
+  spring.datasource.url=jdbc:postgresql://localhost:5432/esua_database
     spring.datasource.username=postgres
-    spring.datasource.password=minha_senha_secreta
+    spring.datasource.password=minhaSenhasecreta
     spring.datasource.driver-class-name=org.postgresql.Driver
     spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
     spring.jpa.hibernate.ddl-auto=update
 
+    # Log de SQL e Hibernate
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type.descriptor.sql=TRACE
+logging.level.org.springframework.transaction=DEBUG
+
+
     spring.jmx.enabled=false
     server.port=8082
+
+    spring.mail.host=smtp.gmail.com
+    spring.mail.port=587
+    spring.mail.username=user@email.com
+    spring.mail.password=senhaTemporariaSecreta
+    spring.mail.properties.mail.smtp.auth=true
+    spring.mail.properties.smtp.starttls.enable=true
+
+    spring.jackson.date-format=dd/MM/yyyy
+    spring.jackson.time-zone=America/Sao_Paulo
     ```
 Note que você deve colocar o nome da database que você criou lá no PostgreSQL. Da mesma forma, a sua senha que foi definida na instalação do PostgreSQL. Também é importante definir uma porta para o servidor do projeto projeto em `server.port`, pois a porta padrão 8080 é muito utilizada em outros serviços. 
 
